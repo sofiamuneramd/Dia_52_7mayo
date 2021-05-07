@@ -38,6 +38,8 @@ class BDD:
 
     ventas['Costo total']=ventas['Precio unitario'] * ventas['Orden '] - ventas['Descuento']
 
+  
+
     # Verificamos con shape que acabamos de agregar una columna a ventas 
 
     print('Tamaño Dataframe modificado: ', ventas.shape)
@@ -46,32 +48,42 @@ class BDD:
 
     ventas_orden=ventas.sort_values(by='Precio unitario',ascending=True)
 
-    # Ahora mediante groupby vamos a agrupar las columnas #Orden y Costo total y vamos a agregar 
+    # Ahora mediante groupby vamos a agrupar las columnas #Orden y Costo total, luego vamos a agregar tres columnas; la primera contiene la  funcion sum (suma los costos totales asociados a #Orden), la segunda columna contiene la funcion max (Imprime el Costo total mas alto asociado a #Orden) finalmente está la columna min (Costo total mas bajo asociado a #Orden)
 
-    cobros=ventas.groupby('#Orden')['Costo total'].agg([sum,max])
+    cobros=ventas.groupby('#Orden')['Costo total'].agg([sum,max, min])
+
+    print(cobros)
     
+    # Ahora vamos a filtrar la hoja ventas por la columna #Orden y seleccionaremos las filas o entradas que corresponden al numero de orden 1234
 
     orden_1234=ventas[ventas['#Orden']==1234]
-    
 
     # Haciendo uso de la funcion ExcelWriter de pandas vamos a crear un nuevo archivo .xlsx llamado Copia1 
 
     nuevo=ExcelWriter('Copia1.xlsx')
 
-    # Enviamos el dateframe que acabamos de crear (matriz1) a el archivo nuevo (Copia1) 
+    # El nuevo archivo que acabamos de crear (Copia1) va a tener 3 hojas; 
+
+    # Ventas(va a contener el Dateframe modificado 6x6 y ordenado segun precio unitario de menor a mayor ) 
 
     ventas_orden.to_excel(nuevo,'Ventas',index=False)
-    cobros.to_excel(nuevo,'Cobros',index=False)
-    orden_1234.to_excel(nuevo,'Orden 1234',index=False)
 
+    # Cobros(contiene la suma de los pedidos realizados por cada #Orden, el precio mas alto y el mas bajo de la orden 3*3)
+
+    cobros.to_excel(nuevo,'Cobros',index=True)
+
+    # Orden 1234 contiene los productos pedidos por este numero de orden 
+
+    orden_1234.to_excel(nuevo,'Orden 1234',index=False)
 
     # Guardamos lo que acabamos de introducir al archivo nuevo 
 
     nuevo.save()
 
-
-
-
+# Llamamos la clase BDD
 
 a=BDD()
+
+# La funcion pedidos de BDD va a leer la informacion de Libro1, la analiza y modifica e imprime los resultados en el archivo nuevo Copia1
+
 a.pedidos()
