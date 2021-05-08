@@ -204,9 +204,9 @@ class Gimnasio:
     tabla_dinamica=imc_mod.pivot_table(index='Cedula ', values=['Peso (kg)','Estatura (m)','IMC','Condicion']) 
     print(tabla_dinamica)
 
-    # Creamos una archivo nuevo llamado copia2 (el mismo de la funcion clientes, se debe de crear aca en caso de que la anterior no sea llamada)
+    # Creamos una archivo nuevo llamado copia3
 
-    nuevo=ExcelWriter('Copia2.xlsx')
+    nuevo=ExcelWriter('Copia3.xlsx')
 
     tabla_dinamica.to_excel(nuevo,'Salud',index=False)
 
