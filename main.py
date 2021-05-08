@@ -199,14 +199,18 @@ class Gimnasio:
 
     imc_mod=imc.rename(columns={'Peso':'Peso (kg)', 'Altura':'Estatura (m)'})
 
-    # Creamos una tabla dinamica mediante .pivot_table con el indice en la columna Cedula que nos permitirá filtrar por la cedula seleccionada y ver solo los datos correspondinetes a esta (la tabla contiene las columnas Peso, estatura)
+    # Creamos una tabla dinamica mediante .pivot_table con el indice en la columna Cedula que nos permitirá filtrar por la cedula seleccionada y ver solo los datos correspondinetes a esta (la tabla contiene las columnas Peso, estatura, imc y condicion)
 
     tabla_dinamica=imc_mod.pivot_table(index='Cedula ', values=['Peso (kg)','Estatura (m)','IMC','Condicion']) 
     print(tabla_dinamica)
 
+    # Creamos una archivo nuevo llamado copia2 (el mismo de la funcion clientes, se debe de crear aca en caso de que la anterior no sea llamada)
+
     nuevo=ExcelWriter('Copia2.xlsx')
 
     tabla_dinamica.to_excel(nuevo,'Salud',index=False)
+
+    nuevo.save()
 
 
   
